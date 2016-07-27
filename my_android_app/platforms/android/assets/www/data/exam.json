@@ -1,0 +1,14 @@
+{
+  "subject": [
+    {
+      "type": 0,
+      "question": "今天下雨, 开坦克要跑水泥地才不会留下痕迹",
+      "answer": true
+    },
+    {
+      "type": 0,
+      "question": "今天出太阳了, 开坦克要跑啥地面都不会留下痕迹",
+      "answer": false
+    }
+  ]
+}

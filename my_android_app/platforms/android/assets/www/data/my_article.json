@@ -1,0 +1,15 @@
+{
+  "article": [
+    {
+      "module": "rules",
+      "title": "rules",
+      "html": "rules",
+      "author": ""
+    },
+    {
+      "type": 0,
+      "question": "今天出太阳了, 开坦克要跑啥地面都不会留下痕迹",
+      "answer": false
+    }
+  ]
+}
