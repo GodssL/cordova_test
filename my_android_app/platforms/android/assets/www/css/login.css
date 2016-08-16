@@ -1,4 +1,5 @@
-#header {position: absolute; top: 40%; padding:0 10%;}
+#header .form-group {position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; width: 252px; height: 54px;}
+#header .form-group input {width: 180px}
 #header span {color: #666; text-transform: lowercase;}
 
 

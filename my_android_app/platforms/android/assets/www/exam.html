@@ -4,10 +4,44 @@
     <meta charset="UTF-8">
     <title>exam</title>
     <link href="css/public.css" rel="stylesheet" type="text/css" />
+    <link href="css/exam.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
+<body ng-controller="examController">
 <div id="header">
     <img class="header_inner" src="images/exam_02.png" />
+</div>
+<div id="body">
+    <div>
+        <div class="toolbar"><span ng-click="submitExam()">提交试卷</span></div>
+        <div class="article">
+            一、单选题
+            <div class="single" ng-repeat="single in single_list">
+                <div class="question">{{single.index = $index; ($index + 1) + ". " + single.question}}</div>
+                <div class="answer">
+                    <div class="option" ng-repeat="option in single.option">
+                        <label><input type="radio" ng-value="{{$index}}" ng-attr-name="single{{single.index}}" ng-click="getAnswerSingle($index)"/> {{option}}</label><br />
+                    </div>
+                </div>
+            </div>
+            二、多选题
+            <div class="multiple" ng-repeat="mul in multiple">
+                <div class="question">{{mul.index = $index; ($index + 1) + ". " + mul.question}}</div>
+                <div class="answer">
+                    <div class="option" ng-repeat="option in mul.option">
+                        <label><input type="checkbox" ng-model="status" ng-attr-name="multiple{{mul.index}}" ng-click="getAnswerMultiple($index, status, mul.index)"/> {{option}}</label><br />
+                    </div>
+                </div>
+            </div>
+            三、判断题
+            <div class="judgment" ng-repeat="jm in judgment">
+                <div class="question">{{($index + 1) + ". " + jm.question}}</div>
+                <div class="answer">
+                    <label><input type="radio" value="true" ng-attr-name="judgment{{$index}}" ng-click="getAnswerJudgment(true)"/> 对 </label>
+                    <label><input type="radio" value="false" ng-attr-name="judgment{{$index}}" ng-click="getAnswerJudgment(false)" /> 错</label>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

@@ -5,9 +5,50 @@
     <title>exam</title>
     <link href="css/public.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
+<body ng-controller="rulesController">
 <div id="header">
     <img class="header_inner" src="images/rules_02.png" />
 </div>
+<div id="body">
+    <ul ng-show="listOrArticle">
+        <li ng-repeat="x in data" ng-click="show_article(x.html)">{{x.title}}</li>
+    </ul>
+    <div ng-show="!listOrArticle">
+        <div class="toolbar"><span ng-click="returnList()">返回列表</span></div>
+        <div class="article" ng-bind-html="article"></div>
+    </div>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -22,7 +22,7 @@
         var app = angular.module("army", ["ngRoute", "ngCordova"]);
         app.controller("loginController", function($scope, $http, $location){
             $scope.checkPwd = function(){
-                $http.get("data/global_setting.json").success(function (response) {
+                $http.get("data/global_setting.json").success(function(response) {
                     if ($scope.pwd != response.login_pwd) {
                         $scope.message = "密码错误";
                         pwd_error_times = pwd_error_times + 1;
@@ -33,6 +33,153 @@
                         $location.path("/home");
                     }
                 });
+            }
+        });
+        app.controller("rulesController", function($scope, $http, $sce){
+            $http.get("data/rules_article.json").success(function(response) {
+                $scope.data = response.article;
+            });
+            $scope.listOrArticle = true;
+            $scope.show_article = function(article){
+                $scope.article = $sce.trustAsHtml(article);
+                $scope.listOrArticle = false;
+            };
+            $scope.returnList = function(){
+                $scope.listOrArticle = true;
+            };
+        });
+        app.controller("speechController", function($scope, $http, $sce){
+            $http.get("data/speech_article.json").success(function(response) {
+                $scope.data = response.article;
+            });
+            $scope.listOrArticle = true;
+            $scope.show_article = function(article){
+                $scope.article = $sce.trustAsHtml(article);
+                $scope.listOrArticle = false;
+            };
+            $scope.returnList = function(){
+                $scope.listOrArticle = true;
+            };
+        });
+        app.controller("reformController", function($scope, $http, $sce){
+            $http.get("data/reform_article.json").success(function(response) {
+                $scope.data = response.article;
+            });
+            $scope.listOrArticle = true;
+            $scope.show_article = function(article){
+                $scope.article = $sce.trustAsHtml(article);
+                $scope.listOrArticle = false;
+            };
+            $scope.returnList = function(){
+                $scope.listOrArticle = true;
+            };
+        });
+        app.controller("spiritController", function($scope, $http, $sce){
+            $http.get("data/reform_article.json").success(function(response) {
+                $scope.data = response.article;
+            });
+            $scope.listOrArticle = true;
+            $scope.show_article = function(article){
+                $scope.article = $sce.trustAsHtml(article);
+                $scope.listOrArticle = false;
+            };
+            $scope.returnList = function(){
+                $scope.listOrArticle = true;
+            };
+        });
+        app.controller("examController", function($scope, $http, $sce){
+            $scope.totalScore = 0;
+            $http.get("data/exam.json").success(function(response) {
+                $scope.judgment = response.judgment.list;
+                $scope.judgmentScore = response.judgment.score;
+                $scope.single_list = response.single.list;
+                $scope.singleScore = response.single.score;
+                $scope.multiple = response.multiple.list;
+                $scope.multipleScore = response.multiple.score;
+            });
+            $scope.submitExam = function(){
+                alert("您的得分是: " + $scope.totalScore + " 分");
+            };
+            $scope.getAnswerMultiple = function(answer, status, index){
+                if(this.mul.score == undefined){
+                    this.mul.score = 0;
+                }
+                if(this.mul._an == undefined){
+                    this.mul._an = 0;
+                }
+                if(status) {
+                    var _an = 0;
+                    switch (answer) {
+                        case 0:
+                            _an = 8; // 1000
+                            break;
+                        case 1:
+                            _an = 4; // 0100
+                            break;
+                        case 2:
+                            _an = 2; // 0010
+                            break;
+                        case 3:
+                            _an = 1; // 0001
+                            break;
+                        default:
+                            _an = 0;
+                    }
+                    this.mul._an = this.mul._an | _an;
+                }else{
+                    var _an = 1;
+                    switch (answer) {
+                        case 0:
+                            _an = 7; // 0111
+                            break;
+                        case 1:
+                            _an = 11; // 1011
+                            break;
+                        case 2:
+                            _an = 13; // 1101
+                            break;
+                        case 3:
+                            _an = 14; // 1110
+                            break;
+                        default:
+                            _an = 1;
+                    }
+                    this.mul._an = this.mul._an & _an;
+                }
+                if(this.mul._an.toString(2) == $scope.multiple[index].answer && this.mul.score == 0){
+                    $scope.totalScore = $scope.totalScore + $scope.multipleScore;
+                    this.mul.score = $scope.multipleScore;
+                }else if(this.mul._an.toString(2) != $scope.multiple[index].answer && this.mul.score != 0){
+                    $scope.totalScore = $scope.totalScore - $scope.multipleScore;
+                    this.mul.score = 0;
+                }
+                console.log($scope.totalScore, this.mul.score);
+            };
+            $scope.getAnswerSingle = function(answer){
+                if(this.single.score == undefined){
+                    this.single.score = 0;
+                }
+                if(this.single.answer == answer && this.single.score == 0){
+                    $scope.totalScore = $scope.totalScore + $scope.singleScore;
+                    this.single.score = $scope.singleScore;
+                }else if(this.single.answer != answer && this.single.score != 0){
+                    $scope.totalScore = $scope.totalScore - $scope.singleScore;
+                    this.single.score = 0;
+                }
+                console.log($scope.totalScore, this.single.score);
+            };
+            $scope.getAnswerJudgment = function(answer){
+                if(this.jm.score == undefined){
+                    this.jm.score = 0;
+                }
+                if(this.jm.answer == answer && this.jm.score == 0){
+                    $scope.totalScore = $scope.totalScore + $scope.judgmentScore;
+                    this.jm.score = $scope.judgmentScore;
+                }else if(this.jm.answer != answer && this.jm.score != 0){
+                    $scope.totalScore = $scope.totalScore - $scope.judgmentScore;
+                    this.jm.score = 0;
+                }
+                console.log($scope.totalScore, this.jm.score);
             }
         });
         app.config(["$routeProvider", function($routeProvider){
@@ -49,3 +196,40 @@
         }]);
     </script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
